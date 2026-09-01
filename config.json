@@ -16,7 +16,8 @@
 
   "level2": {
     "mode": "session-triggered",
-    "note": "No durable unattended scheduler exists for this: CronCreate is session-only (dies with the session, 7-day max even if recurring), and `schedule` cloud routines run in an isolated Anthropic sandbox with no access to local files/tools. Level 2 (/council anchor audit) runs when a Claude Code session actually checks -- either the user asks, or a session start notices floorDays has elapsed.",
+    "note": "CronCreate is session-only (dies with the session). `schedule` cloud routines run in an isolated Anthropic sandbox with no access to local files/tools -- EXCEPT a git repo they check out. State is now mirrored (config.json + council/decisions.jsonl only, never the full ~/.claude tree with its credentials) to https://github.com/trupo-zz/selfoptimize-state by lib.js's syncStateRepo(), called at the end of every level1-verify.js run. A cloud routine can be scheduled to check that repo out, run its own multi-model audit of Level 1's decisions/trust-adjustments, and push corrections back -- genuinely independent of anything running locally. Not yet wired as an actual routine (needs the schedule skill's create step); until then Level 2 stays session-triggered.",
+    "stateRepo": "https://github.com/trupo-zz/selfoptimize-state",
     "floorDays": 7,
     "lastRun": null,
     "escalateOnDivergence": true

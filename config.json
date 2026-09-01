@@ -15,9 +15,10 @@
   },
 
   "level2": {
-    "mode": "session-triggered",
-    "note": "CronCreate is session-only (dies with the session). `schedule` cloud routines run in an isolated Anthropic sandbox with no access to local files/tools -- EXCEPT a git repo they check out. State is now mirrored (config.json + council/decisions.jsonl only, never the full ~/.claude tree with its credentials) to https://github.com/trupo-zz/selfoptimize-state by lib.js's syncStateRepo(), called at the end of every level1-verify.js run. A cloud routine can be scheduled to check that repo out, run its own multi-model audit of Level 1's decisions/trust-adjustments, and push corrections back -- genuinely independent of anything running locally. Not yet wired as an actual routine (needs the schedule skill's create step); until then Level 2 stays session-triggered.",
-    "stateRepo": "https://github.com/trupo-zz/selfoptimize-state",
+    "mode": "cloud-routine",
+    "note": "LIVE as of 2026-09-01: routine trig_011AZSvWcunig6xvCkKQAvci ('selfoptimize-level2-anchor'), weekly Monday 09:07 UTC. Deliberately does NOT use claude.ai's GitHub-repo connector (that requires linking the user's whole GitHub account, a bigger grant than this needed) -- the routine's prompt has it `git clone` the state repo itself over plain unauthenticated HTTPS, which only works because the repo is public. It has no write-back credentials either, so findings are reported as the routine's own run output (visible at claude.ai/code/routines/trig_011AZSvWcunig6xvCkKQAvci), not committed anywhere. This is genuinely independent of anything running locally -- it cannot be gamed by Level 0/1 no matter what they do.",
+    "stateRepo": "https://github.com/trupo-zz/selfoptimize-state (public -- decisions.jsonl is filtered to selfoptimize-topic entries only, see lib.js filterPublicDecisions, never the user's full decision history)",
+    "routineId": "trig_011AZSvWcunig6xvCkKQAvci",
     "floorDays": 7,
     "lastRun": null,
     "escalateOnDivergence": true

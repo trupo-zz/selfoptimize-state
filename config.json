@@ -1,0 +1,24 @@
+{
+  "_comment": "Trilevel self-optimization guardrail config -- see council/decisions.jsonl topic 'autonomy guardrails for self-optimizing stack' for the debate that produced this shape. Level 0 (evolve/ghscan execution) and Level 1 (independent verify+adopt) may both READ this file; only Level 1 may WRITE scorerConstraints, and nothing but a human editing this file directly may touch permanentBoundary.",
+
+  "permanentBoundary": [
+    "credentials",
+    "email-send",
+    "delete-outside-claude-dir",
+    "edit-own-boundary-list"
+  ],
+
+  "scorerConstraints": {
+    "qualityFloor": "independent re-judge (level1-verify.js) must agree the candidate beat baseline before adoption -- a Level-0-reported win alone is never sufficient",
+    "tokenObjective": "minimize subject to qualityFloor holding",
+    "latencyCeiling": null
+  },
+
+  "level2": {
+    "mode": "session-triggered",
+    "note": "No durable unattended scheduler exists for this: CronCreate is session-only (dies with the session, 7-day max even if recurring), and `schedule` cloud routines run in an isolated Anthropic sandbox with no access to local files/tools. Level 2 (/council anchor audit) runs when a Claude Code session actually checks -- either the user asks, or a session start notices floorDays has elapsed.",
+    "floorDays": 7,
+    "lastRun": null,
+    "escalateOnDivergence": true
+  }
+}

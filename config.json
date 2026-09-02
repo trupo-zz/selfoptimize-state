@@ -1,19 +1,16 @@
 {
   "_comment": "Trilevel self-optimization guardrail config -- see council/decisions.jsonl topic 'autonomy guardrails for self-optimizing stack' for the debate that produced this shape. Level 0 (evolve/ghscan execution) and Level 1 (independent verify+adopt) may both READ this file; only Level 1 may WRITE scorerConstraints, and nothing but a human editing this file directly may touch permanentBoundary.",
-
   "permanentBoundary": [
     "credentials",
     "email-send",
     "delete-outside-claude-dir",
     "edit-own-boundary-list"
   ],
-
   "scorerConstraints": {
     "qualityFloor": "independent re-judge (level1-verify.js) must agree the candidate beat baseline before adoption -- a Level-0-reported win alone is never sufficient",
     "tokenObjective": "minimize subject to qualityFloor holding",
     "latencyCeiling": null
   },
-
   "level2": {
     "mode": "cloud-routine",
     "note": "LIVE as of 2026-09-01: routine trig_011AZSvWcunig6xvCkKQAvci ('selfoptimize-level2-anchor'), weekly Monday 09:07 UTC. Deliberately does NOT use claude.ai's GitHub-repo connector (that requires linking the user's whole GitHub account, a bigger grant than this needed) -- the routine's prompt has it `git clone` the state repo itself over plain unauthenticated HTTPS, which only works because the repo is public. It has no write-back credentials either, so findings are reported as the routine's own run output (visible at claude.ai/code/routines/trig_011AZSvWcunig6xvCkKQAvci), not committed anywhere. This is genuinely independent of anything running locally -- it cannot be gamed by Level 0/1 no matter what they do.",
